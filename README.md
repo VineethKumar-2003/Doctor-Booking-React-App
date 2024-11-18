@@ -273,7 +273,7 @@ We welcome contributions from anyone who wants to make the Doctor Booking App be
 
 ---
 
-## Contributing
+## Contributors
 
 - Team Name: Trifecta
 - [Vineeth Kumar G](https://github.com/VineethKumar-2003)
