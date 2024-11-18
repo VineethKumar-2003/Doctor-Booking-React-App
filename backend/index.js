@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import path from "path";
 import authRoute from "./Routes/auth.js";
 import userRoute from "./Routes/user.js";
 import doctorRoute from "./Routes/doctor.js";
@@ -42,16 +43,20 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
 
-// API Health Check
-app.get('/', (req, res) => {
-    res.send("API is working");
-});
+// Serve Static React Build
+const __dirname = path.resolve(); // Resolve the current directory
+app.use(express.static(path.join(__dirname, "dist"))); // Serve the `dist` folder
 
 // Routes
-app.use('/api/v1/auth', authRoute);    // domain/api/v1/auth/register
-app.use('/api/v1/users', userRoute);   // domain/api/v1/users
-app.use('/api/v1/doctors', doctorRoute);  // domain/api/v1/doctors
-app.use('/api/v1/reviews', reviewRoute);  // domain/api/v1/reviews
+app.use('/api/v1/auth', authRoute);    // API route: domain/api/v1/auth
+app.use('/api/v1/users', userRoute);   // API route: domain/api/v1/users
+app.use('/api/v1/doctors', doctorRoute);  // API route: domain/api/v1/doctors
+app.use('/api/v1/reviews', reviewRoute);  // API route: domain/api/v1/reviews
+
+// Serve React's index.html for any other routes
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 // Start server
 app.listen(port, () => {
